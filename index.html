@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[Your Company Name] — Know your soil, protect your crop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF7EF;
+    --ink:#241F17;
+    --ink-soft:#5B5344;
+    --leaf:#2E4A22;
+    --leaf-dark:#1D3015;
+    --soil:#8A5A2B;
+    --soil-dark:#5E3C1B;
+    --water:#3E7C9E;
+    --gold:#D98E2B;
+    --line: rgba(36,31,23,0.12);
+    --card: #FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Manrope', sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.5;
+  }
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(251,247,239,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1040px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--leaf-dark);}
+  .brand-mark{width:30px;height:30px;flex-shrink:0;}
+  .nav-cta{
+    background:var(--leaf); color:#fff; border:none;
+    padding:10px 18px; border-radius:8px; font-weight:600; font-size:15px;
+    cursor:pointer; font-family:inherit; text-decoration:none;
+  }
+  .nav-cta:hover{background:var(--leaf-dark);}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:56px 0 32px;}
+  .hero-grid{display:grid; grid-template-columns: 1.1fr 1fr; gap:48px; align-items:center;}
+  h1{
+    font-size:44px; line-height:1.12; font-weight:800; letter-spacing:-0.01em;
+    margin:0 0 18px; color:var(--ink);
+  }
+  .hero p.lede{font-size:18px; color:var(--ink-soft); margin:0 0 28px; max-width:46ch;}
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--leaf); color:#fff; border:none; padding:14px 24px;
+    border-radius:10px; font-weight:600; font-size:16px; cursor:pointer;
+    font-family:inherit; text-decoration:none; display:inline-block;
+  }
+  .btn-primary:hover{background:var(--leaf-dark);}
+  .btn-ghost{
+    background:transparent; color:var(--ink); border:1.5px solid var(--line); padding:13px 22px;
+    border-radius:10px; font-weight:600; font-size:16px; cursor:pointer;
+    font-family:inherit; text-decoration:none; display:inline-block;
+  }
+  .btn-ghost:hover{border-color:var(--ink);}
+
+  .hero-art{position:relative;}
+
+  /* ---------- Problem strip ---------- */
+  .problems{padding:36px 0 8px;}
+  .problems h2{font-size:15px; text-transform:none; color:var(--ink-soft); font-weight:600; margin:0 0 18px;}
+  .problem-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px;}
+  .problem-card{
+    background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px;
+  }
+  .problem-card svg{width:26px;height:26px; margin-bottom:10px; color:var(--soil);}
+  .problem-card p{margin:0; font-size:14.5px; font-weight:600; color:var(--ink);}
+
+  /* ---------- Demo section ---------- */
+  .demo-section{padding:72px 0;}
+  .demo-head{max-width:60ch; margin:0 0 32px;}
+  .demo-head .kicker{color:var(--water); font-weight:700; font-size:15px; margin:0 0 8px;}
+  .demo-head h2{font-size:32px; font-weight:800; margin:0 0 12px; line-height:1.2;}
+  .demo-head p{color:var(--ink-soft); font-size:16.5px; margin:0;}
+
+  .demo-card{
+    background:var(--leaf-dark); border-radius:20px; padding:36px;
+    display:grid; grid-template-columns: 1fr 1.1fr; gap:40px; align-items:center;
+    color:#fff;
+  }
+  .gauge-wrap{display:flex; flex-direction:column; align-items:center; gap:18px;}
+  .gauge{position:relative; width:220px; height:220px;}
+  .gauge svg{width:220px;height:220px;transform:rotate(-90deg);}
+  .gauge-bg{fill:none; stroke:rgba(255,255,255,0.15); stroke-width:16;}
+  .gauge-fg{fill:none; stroke:var(--water); stroke-width:16; stroke-linecap:round; transition:stroke-dasharray 0.15s ease, stroke 0.3s ease;}
+  .gauge-label{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .gauge-label .pct{font-size:40px; font-weight:800;}
+  .gauge-label .txt{font-size:13px; color:rgba(255,255,255,0.7); font-weight:600;}
+  .slider-row{width:100%; max-width:280px;}
+  .slider-row input[type=range]{
+    width:100%; height:6px; border-radius:3px; -webkit-appearance:none; appearance:none;
+    background:rgba(255,255,255,0.25); outline:none; cursor:pointer;
+  }
+  .slider-row input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:22px; height:22px; border-radius:50%;
+    background:#fff; cursor:pointer; border:4px solid var(--water);
+  }
+  .slider-row input[type=range]::-moz-range-thumb{
+    width:22px; height:22px; border-radius:50%; background:#fff; cursor:pointer; border:4px solid var(--water);
+  }
+  .slider-caption{font-size:13px; color:rgba(255,255,255,0.65); margin-top:8px; text-align:center;}
+
+  .demo-status{
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius:14px; padding:24px;
+  }
+  .status-badge{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px;
+    font-size:13px; font-weight:700; margin-bottom:14px;
+  }
+  .status-dot{width:8px;height:8px;border-radius:50%; background:currentColor;}
+  .status-title{font-size:20px; font-weight:800; margin:0 0 8px;}
+  .status-desc{font-size:15px; color:rgba(255,255,255,0.75); margin:0 0 20px;}
+  .valve-row{display:flex; align-items:center; justify-content:space-between; padding-top:16px; border-top:1px solid rgba(255,255,255,0.14);}
+  .valve-label{font-size:14px; font-weight:600; color:rgba(255,255,255,0.85);}
+  .valve-state{font-size:14px; font-weight:800;}
+  .toggle{
+    position:relative; width:52px; height:28px; background:rgba(255,255,255,0.2); border-radius:999px;
+    border:none; cursor:pointer; padding:0;
+  }
+  .toggle::after{
+    content:''; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%;
+    background:#fff; transition:transform 0.2s ease;
+  }
+  .toggle.on{background:var(--water);}
+  .toggle.on::after{transform:translateX(24px);}
+
+  /* ---------- How it works ---------- */
+  .how{padding:72px 0;}
+  .how h2{font-size:32px; font-weight:800; margin:0 0 40px;}
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+  .step{position:relative; padding-left:0;}
+  .step-num{
+    width:40px; height:40px; border-radius:50%; background:var(--leaf); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px; margin-bottom:16px;
+  }
+  .step h3{font-size:18px; font-weight:800; margin:0 0 8px;}
+  .step p{font-size:15px; color:var(--ink-soft); margin:0;}
+
+  /* ---------- Benefits ---------- */
+  .benefits{background:var(--soil); color:#fff; padding:64px 0;}
+  .benefits h2{font-size:30px; font-weight:800; margin:0 0 32px; max-width:24ch;}
+  .benefit-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:28px;}
+  .benefit-item svg{width:28px;height:28px; margin-bottom:14px; color:var(--gold);}
+  .benefit-item h3{font-size:17px; font-weight:800; margin:0 0 8px;}
+  .benefit-item p{font-size:14.5px; color:rgba(255,255,255,0.8); margin:0;}
+
+  /* ---------- CTA / pilot form ---------- */
+  .pilot{padding:80px 0;}
+  .pilot-card{
+    background:var(--card); border:1px solid var(--line); border-radius:20px; padding:44px;
+    display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:center;
+  }
+  .pilot h2{font-size:28px; font-weight:800; margin:0 0 12px;}
+  .pilot p{color:var(--ink-soft); font-size:15.5px; margin:0;}
+  .form-row{display:flex; flex-direction:column; gap:12px;}
+  .form-row input{
+    padding:13px 14px; border-radius:9px; border:1.5px solid var(--line); font-family:inherit; font-size:15px;
+    background:var(--cream);
+  }
+  .form-row input:focus{outline:2px solid var(--leaf); outline-offset:1px; border-color:transparent;}
+  .form-row button{
+    background:var(--leaf); color:#fff; border:none; padding:14px; border-radius:9px;
+    font-weight:700; font-size:15.5px; cursor:pointer; font-family:inherit;
+  }
+  .form-row button:hover{background:var(--leaf-dark);}
+  .form-note{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+
+  footer{border-top:1px solid var(--line); padding:28px 0; margin-top:20px;}
+  .footer-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;}
+  .footer-row p{margin:0; font-size:13.5px; color:var(--ink-soft);}
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    h1{font-size:33px;}
+    .problem-grid{grid-template-columns:repeat(2,1fr);}
+    .demo-card{grid-template-columns:1fr; padding:26px;}
+    .steps{grid-template-columns:1fr;}
+    .benefit-grid{grid-template-columns:1fr;}
+    .pilot-card{grid-template-columns:1fr; padding:28px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 29C16 29 6 22.5 6 14.5C6 9.8 9.8 6 14.5 6C15.9 6 17.2 6.4 18.3 7.1C19.4 6.4 20.7 6 22.1 6C26.8 6 30 9.3 30 13.5C30 20.8 20.5 27.2 16 29Z" fill="#2E4A22"/>
+        <path d="M16 29V14" stroke="#FBF7EF" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      [Your Company Name]
+    </div>
+    <a class="nav-cta" href="#pilot">Join the pilot</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Know exactly when your crop needs water — before it's too late.</h1>
+      <p class="lede">A sensor in your field tells you, in plain language, when soil is dry, when it's wet enough, and when something's wrong — so you stop guessing and start knowing.</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#demo">Try the live demo</a>
+        <a class="btn-ghost" href="#pilot">Talk to us</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="210" cy="300" rx="200" ry="26" fill="#E7DCC4"/>
+        <path d="M10 260 C 80 230, 340 230, 410 260 L410 300 L10 300 Z" fill="#C9A227" opacity="0.25"/>
+        <path d="M10 270 C 80 245, 340 245, 410 270 L410 300 L10 300 Z" fill="#8A5A2B" opacity="0.55"/>
+        <!-- rows -->
+        <g stroke="#5E3C1B" stroke-width="3" opacity="0.35">
+          <path d="M30 285 Q 210 260 400 285"/>
+          <path d="M30 295 Q 210 272 400 295"/>
+        </g>
+        <!-- plants -->
+        <g stroke="#2E4A22" stroke-width="4" stroke-linecap="round" fill="none">
+          <path d="M90 270 C 85 250, 95 245, 92 225"/>
+          <path d="M92 250 C 100 245, 108 248, 112 240"/>
+          <path d="M92 235 C 84 230, 78 233, 72 226"/>
+        </g>
+        <g stroke="#2E4A22" stroke-width="4" stroke-linecap="round" fill="none">
+          <path d="M150 275 C 145 255, 155 250, 152 230"/>
+          <path d="M152 255 C 160 250, 168 253, 172 245"/>
+          <path d="M152 240 C 144 235, 138 238, 132 231"/>
+        </g>
+        <!-- sensor pole -->
+        <line x1="250" y1="278" x2="250" y2="150" stroke="#5B5344" stroke-width="4"/>
+        <rect x="228" y="110" width="44" height="44" rx="8" fill="#2E4A22"/>
+        <circle cx="250" cy="132" r="9" fill="#3E7C9E"/>
+        <path d="M250 110 V 96" stroke="#5B5344" stroke-width="3"/>
+        <circle cx="250" cy="90" r="5" fill="#D98E2B"/>
+        <!-- signal waves -->
+        <path d="M262 100 Q 275 90 262 78" stroke="#3E7C9E" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M270 108 Q 292 90 270 66" stroke="#3E7C9E" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+        <!-- more plants -->
+        <g stroke="#2E4A22" stroke-width="4" stroke-linecap="round" fill="none">
+          <path d="M300 272 C 295 252, 305 247, 302 227"/>
+          <path d="M302 252 C 310 247, 318 250, 322 242"/>
+          <path d="M302 237 C 294 232, 288 235, 282 228"/>
+        </g>
+        <g stroke="#2E4A22" stroke-width="4" stroke-linecap="round" fill="none">
+          <path d="M350 278 C 345 258, 355 253, 352 233"/>
+          <path d="M352 258 C 360 253, 368 256, 372 248"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="problems">
+  <div class="wrap">
+    <h2>Every season, the same problems come back</h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3C12 3 6 10 6 14a6 6 0 0 0 12 0c0-4-6-11-6-11Z"/></svg>
+        <p>Guessing when to water</p>
+      </div>
+      <div class="problem-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        <p>Water wasted or crop dries out</p>
+      </div>
+      <div class="problem-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg>
+        <p>Pest or disease noticed too late</p>
+      </div>
+      <div class="problem-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21c-4-4-8-7.5-8-12a8 8 0 0 1 16 0c0 4.5-4 8-8 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <p>Hours spent walking the field</p>
+      </div>
+      <div class="problem-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 16a4 4 0 0 1 .6-7.96A5.5 5.5 0 0 1 18 10a3.5 3.5 0 0 1-.5 6.98"/><path d="M8 19l-1 2M12 19l-1 2M16 19l-1 2"/></svg>
+        <p>Rain or heat catches you off guard</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="demo-section" id="demo">
+  <div class="wrap">
+    <div class="demo-head">
+      <p class="kicker">Try it yourself</p>
+      <h2>Drag the slider to see what a farmer would see</h2>
+      <p>This is exactly what shows up on the phone — move the slider to change the soil moisture reading, or flip on the weather forecast, and watch the guidance and water valve respond.</p>
+    </div>
+
+    <div class="demo-card">
+      <div class="gauge-wrap">
+        <div class="gauge">
+          <svg viewBox="0 0 220 220">
+            <circle class="gauge-bg" cx="110" cy="110" r="94"/>
+            <circle class="gauge-fg" id="gaugeFg" cx="110" cy="110" r="94"/>
+          </svg>
+          <div class="gauge-label">
+            <div class="pct" id="pctLabel">42%</div>
+            <div class="txt">Soil moisture</div>
+          </div>
+        </div>
+        <div class="slider-row">
+          <input type="range" id="moistureSlider" min="0" max="100" value="42">
+          <div class="slider-caption">Move to simulate a sensor reading</div>
+        </div>
+      </div>
+
+      <div class="demo-status">
+        <div class="status-badge" id="statusBadge" style="background:rgba(217,142,43,0.18); color:#F2C879;">
+          <span class="status-dot"></span>
+          <span id="statusLabel">Getting dry</span>
+        </div>
+        <h3 class="status-title" id="statusTitle">Irrigate within the next day</h3>
+        <p class="status-desc" id="statusDesc">Soil moisture has dropped below the comfortable range for this crop stage. Water now to avoid stress.</p>
+
+        <div class="valve-row" style="border-top:none; padding-top:0; margin-bottom:4px;">
+          <div class="valve-label">Rain expected tomorrow</div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span class="valve-state" id="rainState">NO</span>
+            <button class="toggle" id="rainToggle" aria-label="Toggle rain forecast"></button>
+          </div>
+        </div>
+
+        <div class="valve-row">
+          <div class="valve-label">Auto water valve</div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span class="valve-state" id="valveState">OFF</span>
+            <button class="toggle" id="valveToggle" aria-label="Toggle water valve"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Sensors go in the soil and the sky</h3>
+        <p>Waterproof ground sensors measure moisture and temperature, while a weather sensor tracks rainfall, humidity, and short-term forecasts — no wiring, runs on battery for months.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Readings reach your phone</h3>
+        <p>Data travels over a long-range signal built for farms with no WiFi. You get a simple message — no charts to decode.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>You act, or it acts for you</h3>
+        <p>Get an alert and irrigate yourself, or switch on automatic watering — the system checks the weather forecast first, so it won't water right before rain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="benefits">
+  <div class="wrap">
+    <h2>Built around what actually matters on a farm</h2>
+    <div class="benefit-grid">
+      <div class="benefit-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M5 10l7-7 7 7"/></svg>
+        <h3>Works without reliable internet</h3>
+        <p>Long-range wireless connectivity is built for fields far from mobile towers.</p>
+      </div>
+      <div class="benefit-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>
+        <h3>Plain-language alerts</h3>
+        <p>No dashboards to learn. Messages tell you what to do, not just numbers to interpret.</p>
+      </div>
+      <div class="benefit-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+        <h3>You stay in control</h3>
+        <p>Automate watering when you trust it, or keep a manual switch — your call, always.</p>
+      </div>
+      <div class="benefit-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 16a4 4 0 0 1 .6-7.96A5.5 5.5 0 0 1 18 10a3.5 3.5 0 0 1-.5 6.98"/><path d="M8 19l-1 2M12 19l-1 2M16 19l-1 2"/></svg>
+        <h3>Weather-aware watering</h3>
+        <p>Local rain and heat forecasts are factored in automatically, so you never irrigate right before a downpour.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pilot" id="pilot">
+  <div class="wrap">
+    <div class="pilot-card">
+      <div>
+        <h2>Bring this to your field first</h2>
+        <p>We're setting up a small number of free pilot installations this season. Leave your details and our team will visit your farm to set it up.</p>
+      </div>
+      <div class="form-row">
+        <input type="text" placeholder="Your name">
+        <input type="tel" placeholder="Phone number">
+        <input type="text" placeholder="Village / district">
+        <button type="button">Request a pilot visit</button>
+        <p class="form-note">No payment or commitment needed to join the pilot.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <p>[Your Company Name] — a demo built to show what sensor-guided farming looks like.</p>
+    <p>hello@yourcompany.example</p>
+  </div>
+  <div class="wrap" style="margin-top:14px; padding-top:14px; border-top:1px solid var(--line);">
+    <p style="margin:0; font-size:12.5px; color:var(--ink-soft);">© 2026 [Your Company Name]. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  const slider = document.getElementById('moistureSlider');
+  const gaugeFg = document.getElementById('gaugeFg');
+  const pctLabel = document.getElementById('pctLabel');
+  const statusBadge = document.getElementById('statusBadge');
+  const statusLabel = document.getElementById('statusLabel');
+  const statusTitle = document.getElementById('statusTitle');
+  const statusDesc = document.getElementById('statusDesc');
+  const valveToggle = document.getElementById('valveToggle');
+  const valveState = document.getElementById('valveState');
+  const rainToggle = document.getElementById('rainToggle');
+  const rainState = document.getElementById('rainState');
+
+  const RADIUS = 94;
+  const CIRC = 2 * Math.PI * RADIUS;
+  gaugeFg.style.strokeDasharray = CIRC;
+
+  let manualValveOverride = null; // null = auto-follow value; true/false = user override
+  let rainExpected = false;
+
+  function stateFor(v){
+    if (v < 30) return {
+      key:'dry', color:'#E2694A', bg:'rgba(226,105,74,0.18)', label:'Too dry',
+      title:'Irrigate now', desc:'Soil moisture is critically low for this crop. Delaying watering risks stress and yield loss.',
+      valveOn:true
+    };
+    if (v < 45) return {
+      key:'low', color:'#D98E2B', bg:'rgba(217,142,43,0.18)', label:'Getting dry',
+      title:'Irrigate within the next day', desc:"Soil moisture has dropped below the comfortable range for this crop stage. Water now to avoid stress.",
+      valveOn:true
+    };
+    if (v <= 70) return {
+      key:'good', color:'#6FAE5A', bg:'rgba(111,174,90,0.18)', label:'Healthy range',
+      title:'No action needed', desc:'Soil moisture is in a good range for this crop. Check back tomorrow.',
+      valveOn:false
+    };
+    return {
+      key:'wet', color:'#3E7C9E', bg:'rgba(62,124,158,0.18)', label:'Too wet',
+      title:'Hold off on watering', desc:'Soil is already saturated. Watering now risks root damage and wasted water.',
+      valveOn:false
+    };
+  }
+
+  function render(){
+    const v = Number(slider.value);
+    const offset = CIRC - (v/100) * CIRC;
+    gaugeFg.style.strokeDashoffset = offset;
+    pctLabel.textContent = v + '%';
+
+    let s = stateFor(v);
+
+    // Weather forecast sensor overrides irrigation advice when rain is coming,
+    // even if the soil reads dry right now — this is what the weather sensor adds.
+    if (rainExpected && s.valveOn){
+      s = {
+        color:'#3E7C9E', bg:'rgba(62,124,158,0.18)', label:'Rain forecast',
+        title:'Hold off — rain expected tomorrow',
+        desc:'Soil is dry today, but the weather sensor forecasts rain within 24 hours. Skipping irrigation now avoids wasting water before the rain arrives.',
+        valveOn:false
+      };
+    }
+
+    gaugeFg.style.stroke = s.color;
+    statusBadge.style.background = s.bg;
+    statusBadge.style.color = s.color;
+    statusLabel.textContent = s.label;
+    statusTitle.textContent = s.title;
+    statusDesc.textContent = s.desc;
+
+    const isOn = manualValveOverride === null ? s.valveOn : manualValveOverride;
+    valveToggle.classList.toggle('on', isOn);
+    valveState.textContent = isOn ? 'ON' : 'OFF';
+  }
+
+  slider.addEventListener('input', () => {
+    manualValveOverride = null; // let it auto-follow again once user moves the slider
+    render();
+  });
+
+  valveToggle.addEventListener('click', () => {
+    const currentlyOn = valveToggle.classList.contains('on');
+    manualValveOverride = !currentlyOn;
+    render();
+  });
+
+  rainToggle.addEventListener('click', () => {
+    rainExpected = !rainExpected;
+    rainToggle.classList.toggle('on', rainExpected);
+    rainState.textContent = rainExpected ? 'YES' : 'NO';
+    manualValveOverride = null; // let the valve re-follow the new combined advice
+    render();
+  });
+
+  // init with a dasharray offset for initial paint
+  gaugeFg.style.strokeDashoffset = CIRC;
+  requestAnimationFrame(render);
+</script>
+
+</body>
+</html>
